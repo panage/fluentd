@@ -323,12 +323,6 @@ module ConfigurableSpec
       end
     end
 
-    class SubOwner < Owner
-      config_section :buffer do
-        config_set_default :size_of_something, 2048
-      end
-    end
-
     class FlatChild
       include Fluent::Configurable
       attr_accessor :owner
@@ -1037,14 +1031,6 @@ module Fluent::Config
         child.owner = owner
         child.configure(config_element('ROOT', '', {}, []))
         assert_equal 1024, child.size_of_something
-      end
-
-      test 'even in subclass of owner' do
-        owner = ConfigurableSpec::OverwriteDefaults::SubOwner.new
-        child = ConfigurableSpec::OverwriteDefaults::BufferChild.new
-        child.owner = owner
-        child.configure(config_element('ROOT', '', {}, []))
-        assert_equal 2048, child.size_of_something
       end
     end
 
