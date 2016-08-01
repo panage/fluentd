@@ -115,14 +115,14 @@ module Fluent
     end
 
     def configure_encoding
-      return unless (@encoding.nil? && @encoding.nil?)
-
-      if @from_encoding && unless @encoding
-        log.warn "'from_encoding' parameter must be specified with 'encoding' parameter."
-        log.warn "'from_encoding' is ignored"
-        @encoding = nil
-        @from_encoding = nil
-        return
+      unless @encoding
+        if @from_encoding
+          log.warn "'from_encoding' parameter must be specified with 'encoding' parameter."
+          log.warn "'from_encoding' is ignored"
+          @encoding = nil
+          @from_encoding = nil
+          return
+        end
       end
 
       @encoding = parse_encoding_param(@encoding) if @encoding
